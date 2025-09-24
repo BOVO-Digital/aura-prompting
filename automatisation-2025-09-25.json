@@ -1,0 +1,377 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Formulaire test",
+        "formDescription": "Formulaire test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "nom",
+              "placeholder": "Nom",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "prenom",
+              "placeholder": "Prénom",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "age",
+              "fieldType": "number",
+              "placeholder": "Âge ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "mail",
+              "fieldType": "email",
+              "placeholder": "Email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "telephone",
+              "placeholder": "Téléphone",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -816,
+        -160
+      ],
+      "id": "3cd7b166-1b55-42b0-86f1-365a4acd6a61",
+      "name": "On form submission",
+      "webhookId": "1384156c-b9ac-4a53-b5fd-6fe0ca89e4a6"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc",
+          "mode": "list",
+          "cachedResultName": "Info prospects",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Prospects",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nom": "={{ $('On form submission').first().json.nom }}",
+            "Prénom": "={{ $('On form submission').first().json.prenom }}",
+            "Âge ": "={{ $('On form submission').first().json.age }}",
+            "Numéro ": "={{ $('On form submission').first().json.telephone }}",
+            "Mail": "={{ $('On form submission').first().json.mail }}",
+            "Date": "={{ $now }}  "
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nom",
+              "displayName": "Nom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Prénom",
+              "displayName": "Prénom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Âge ",
+              "displayName": "Âge ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mail",
+              "displayName": "Mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Numéro ",
+              "displayName": "Numéro ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -256
+      ],
+      "id": "49cdc7ca-f5ed-4f6a-b73a-aa36340b2839",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J0DfW2GtXptg4N8R",
+          "name": "Google Sheets - william merveille"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c9063d0-ab67-4be5-b6fa-f324c1526c55",
+              "name": "alerte_pour_admin",
+              "value": "=Bonjour\nNouvelle soumission du formulaire par {{ $('On form submission').first().json.nom }}",
+              "type": "string"
+            },
+            {
+              "id": "4300841e-e602-4a8e-92e6-cc0cb24ad009",
+              "name": "confirmation_utilisateur",
+              "value": "=Merci d'avoir remplis le formulaire\nAgréable journée à vous.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        -64
+      ],
+      "id": "bdd828d7-2787-43c1-91ad-cf180a13cd3e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "williammerveilleaklamavo@gmail.com",
+        "subject": "Nouvelle soumission",
+        "emailType": "text",
+        "message": "={{ $json.alerte_pour_admin }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        -160
+      ],
+      "id": "88ed3408-63d3-4499-9b5e-0ca3d812792b",
+      "name": "Send a message",
+      "webhookId": "adb4ee69-cb36-4d91-8d99-27f35a6533c0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KqFLKwXnQ5Iew0jh",
+          "name": "Gmail - william merveille"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').first().json.mail }}",
+        "subject": "Confirmation",
+        "emailType": "text",
+        "message": "={{ $json.confirmation_utilisateur }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        32
+      ],
+      "id": "6ac7d6ab-973d-44bd-85fb-fa068e7ee318",
+      "name": "Send a message1",
+      "webhookId": "3b82c038-6adc-44bf-9f59-80d8638a9de7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KqFLKwXnQ5Iew0jh",
+          "name": "Gmail - william merveille"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc",
+          "mode": "list",
+          "cachedResultName": "Info prospects",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Prospects",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1p7kz4bKZvVs4dmtMAMQFRY2Et9sBfL0IKQF-RB2Xmmc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Mail",
+              "lookupValue": "={{ $json.mail }}"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -592,
+        -160
+      ],
+      "id": "cebc0e01-b413-4e6c-b8f7-a89e69a602f0",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "J0DfW2GtXptg4N8R",
+          "name": "Google Sheets - william merveille"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3344812d-81b3-4b8e-8bd8-0d999eec6fd7",
+              "leftValue": "={{ $json.Mail }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -368,
+        -160
+      ],
+      "id": "8d047afe-f7d9-493e-bc01-26d5e38e9218",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "578694ea6f4ab12c9bcfc084afdd01871da250ed196c974b9fad14bcaf583cea"
+  }
+}
