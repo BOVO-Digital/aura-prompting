@@ -1,0 +1,31 @@
+# Fichiers d'instructions personnelles (exclus du git)
+instructions.md
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+
+# Logs
+*.log
+
+# Fichiers de configuration locaux
+.env
+.env.local
+
+# Dossiers de dépendances
+node_modules/
+__pycache__/
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers système
+.DS_Store
+Thumbs.db
